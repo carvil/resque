@@ -151,8 +151,9 @@ module Resque
             exit!(true) if will_fork?
           end
 
+          lock_interval = ENV['LOCK_INTERVAL'] || 0
+          sleep lock_interval
           done_working
-          sleep lock_interval if lock_interval = ENV['LOCK_INTERVAL']
           @child = nil
         else
           break if interval.zero?
