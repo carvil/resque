@@ -131,7 +131,9 @@ module Resque
 
         lock_interval = ENV['LOCK_INTERVAL'] || 0
         Resque.logger.debug "Sleeping for #{lock_interval}"
-        sleep lock_interval.to_i
+        sleep 60
+        Resque.logger.debug "Done sleeping for #{lock_interval}"
+
 
         if job = reserve(interval)
           Resque.logger.info "got: #{job.inspect}"
@@ -204,6 +206,7 @@ module Resque
     # Attempts to grab a job off one of the provided queues. Returns
     # nil if no job can be found.
     def reserve(interval = 5.0)
+      Resque.logger.info "Grab a job with interval #{interval}"
       interval = interval.to_i
       multi_queue = MultiQueue.new(
         queues.map {|queue| Queue.new(queue, Resque.redis, Resque.coder) },
