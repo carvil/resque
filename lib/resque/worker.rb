@@ -131,7 +131,7 @@ module Resque
 
         lock_interval = ENV['LOCK_INTERVAL'] || 0
         Resque.logger.debug "Sleeping for #{lock_interval}"
-        sleep 10
+        sleep lock_interval.to_i
 
         if job = reserve(interval)
           Resque.logger.info "got: #{job.inspect}"
