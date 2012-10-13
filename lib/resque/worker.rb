@@ -152,6 +152,7 @@ module Resque
           end
 
           done_working
+          sleep lock_interval if lock_interval = ENV['LOCK_INTERVAL']
           @child = nil
         else
           break if interval.zero?
