@@ -129,6 +129,10 @@ module Resque
 
         pause if should_pause?
 
+        lock_interval = ENV['LOCK_INTERVAL'] || 0
+        Resque.logger.debug "Sleeping for #{lock_interval}"
+        sleep lock_interval
+
         if job = reserve(interval)
           Resque.logger.info "got: #{job.inspect}"
           job.worker = self
@@ -151,8 +155,6 @@ module Resque
             exit!(true) if will_fork?
           end
 
-          lock_interval = ENV['LOCK_INTERVAL'] || 0
-          sleep lock_interval
           done_working
           @child = nil
         else
