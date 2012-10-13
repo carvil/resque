@@ -129,11 +129,7 @@ module Resque
 
         pause if should_pause?
 
-        lock_interval = ENV['LOCK_INTERVAL'] || 0
-        Resque.logger.debug "Sleeping for #{lock_interval}"
-        sleep 60
-        Resque.logger.debug "Done sleeping for #{lock_interval}"
-
+        sleep 120
 
         if job = reserve(interval)
           Resque.logger.info "got: #{job.inspect}"
