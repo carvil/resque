@@ -129,8 +129,6 @@ module Resque
 
         pause if should_pause?
 
-        sleep 120
-
         if job = reserve(interval)
           Resque.logger.info "got: #{job.inspect}"
           job.worker = self
@@ -160,6 +158,8 @@ module Resque
           Resque.logger.debug "Timed out after #{interval} seconds"
           procline paused? ? "Paused" : "Waiting for #{@queues.join(',')}"
         end
+
+        sleep 120
       end
 
       unregister_worker
